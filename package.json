@@ -1,0 +1,8 @@
+{
+    "name": "1percent-better",
+    "version": "1.0.0",
+    "description": "1% Better - 100 Day Journey Planner",
+    "engines": {
+          "node": ">=18"
+    }
+}
