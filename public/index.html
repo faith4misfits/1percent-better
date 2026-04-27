@@ -3,205 +3,1397 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1% Better - Your 100 Day Journey</title>
+  <title>1% Better — Your 100 Day Journey</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
-      --primary: #4F46E5; --primary-light: #EEF2FF; --success: #10B981;
-      --warning: #F59E0B; --text: #0F172A; --text-2: #475569; --text-3: #94A3B8;
-      --bg: #F8FAFC; --border: #E2E8F0; --radius: 12px;
+      --primary: #4F46E5;
+      --primary-light: #EEF2FF;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --text: #0F172A;
+      --text-2: #475569;
+      --text-3: #94A3B8;
+      --bg: #F8FAFC;
+      --white: #FFFFFF;
+      --border: #E2E8F0;
+      --radius: 12px;
     }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.5; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
     .screen { display: none; }
     .screen.active { display: flex; }
-    #screen-setup { min-height: 100vh; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(145deg, #0F0C29, #302B63, #24243e); position: relative; overflow: hidden; }
-    #screen-setup::before { content: ''; position: absolute; width: 700px; height: 700px; background: radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 65%); top: -200px; right: -150px; pointer-events: none; }
-    #screen-setup::after { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 65%); bottom: -150px; left: -100px; pointer-events: none; }
-    .setup-card { background: rgba(255,255,255,0.97); border-radius: 24px; padding: 48px; max-width: 540px; width: 100%; box-shadow: 0 40px 80px rgba(0,0,0,0.45); position: relative; z-index: 1; }
-    .brand { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
-    .brand-icon { width: 52px; height: 52px; background: linear-gradient(135deg, #4F46E5, #8B5CF6); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; box-shadow: 0 8px 20px rgba(79,70,229,0.4); flex-shrink: 0; }
-    .brand-text strong { display: block; font-size: 22px; font-weight: 900; color: var(--text); letter-spacing: -0.5px; }
-    .brand-text span { font-size: 12px; color: var(--text-3); font-weight: 500; }
-    .setup-heading { font-size: 29px; font-weight: 800; color: var(--text); margin-bottom: 10px; line-height: 1.25; letter-spacing: -0.5px; }
-    .setup-sub { font-size: 14.5px; color: var(--text-2); margin-bottom: 30px; line-height: 1.65; }
+
+    /* ══ SETUP SCREEN ══ */
+    #screen-setup {
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: linear-gradient(145deg, #0F0C29, #302B63, #24243e);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #screen-setup::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 65%);
+      top: -200px; right: -150px;
+      pointer-events: none;
+    }
+
+    #screen-setup::after {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 65%);
+      bottom: -150px; left: -100px;
+      pointer-events: none;
+    }
+
+    .setup-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 24px;
+      padding: 48px;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.45);
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .brand-icon {
+      width: 52px; height: 52px;
+      background: linear-gradient(135deg, #4F46E5, #8B5CF6);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 8px 20px rgba(79,70,229,0.4);
+      flex-shrink: 0;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    .brand-text span {
+      font-size: 12px;
+      color: var(--text-3);
+      font-weight: 500;
+    }
+
+    .setup-heading {
+      font-size: 29px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.25;
+      letter-spacing: -0.5px;
+    }
+
+    .setup-sub {
+      font-size: 14.5px;
+      color: var(--text-2);
+      margin-bottom: 30px;
+      line-height: 1.65;
+    }
+
     .form-group { margin-bottom: 20px; }
-    label { display: block; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.6px; }
-    textarea { width: 100%; padding: 13px 15px; border: 2px solid var(--border); border-radius: var(--radius); font-size: 15px; color: var(--text); font-family: inherit; transition: border-color 0.2s, box-shadow 0.2s; background: #FAFBFC; height: 88px; resize: vertical; line-height: 1.6; }
-    textarea:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(79,70,229,0.12); }
-    .btn-go { width: 100%; padding: 16px; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; border-radius: var(--radius); font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.2s; margin-top: 6px; box-shadow: 0 8px 24px rgba(79,70,229,0.35); }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 13px 15px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 15px;
+      color: var(--text);
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: #FAFBFC;
+      height: 88px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+    }
+
+    .btn-go {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 6px;
+      box-shadow: 0 8px 24px rgba(79,70,229,0.35);
+      letter-spacing: 0.2px;
+    }
+
     .btn-go:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(79,70,229,0.45); }
+    .btn-go:active { transform: translateY(0); }
     .btn-go:disabled { opacity: 0.55; cursor: not-allowed; transform: none !important; }
-    .resume-bar { background: linear-gradient(135deg, #059669, #10B981); color: white; border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; display: none; align-items: center; gap: 12px; }
+
+    .resume-bar {
+      background: linear-gradient(135deg, #059669, #10B981);
+      color: white;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      display: none;
+      align-items: center;
+      gap: 12px;
+    }
     .resume-bar.show { display: flex; }
     .resume-bar-icon { font-size: 22px; }
     .resume-bar-text { flex: 1; min-width: 0; }
     .resume-bar-text strong { display: block; font-size: 13px; font-weight: 700; }
     .resume-bar-text span { font-size: 12px; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-    .btn-resume { background: white; color: #059669; border: none; border-radius: 8px; padding: 8px 15px; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-    .error-box { background: #FEF2F2; border: 1px solid #FCA5A5; color: #DC2626; border-radius: 10px; padding: 12px 15px; font-size: 13.5px; margin-top: 14px; display: none; line-height: 1.55; }
+    .btn-resume {
+      background: white; color: #059669;
+      border: none; border-radius: 8px;
+      padding: 8px 15px; font-size: 13px;
+      font-weight: 800; cursor: pointer;
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    .error-box {
+      background: #FEF2F2;
+      border: 1px solid #FCA5A5;
+      color: #DC2626;
+      border-radius: 10px;
+      padding: 12px 15px;
+      font-size: 13.5px;
+      margin-top: 14px;
+      display: none;
+      line-height: 1.55;
+    }
     .error-box.show { display: block; }
-    .examples { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--border); }
-    .examples-label { font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; }
+
+    .examples {
+      margin-top: 22px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+    }
+
+    .examples-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+    }
+
     .chips { display: flex; flex-wrap: wrap; gap: 7px; }
-    .chip { padding: 6px 13px; background: var(--primary-light); color: var(--primary); border-radius: 20px; font-size: 12.5px; font-weight: 600; cursor: pointer; border: none; transition: background 0.15s; }
+
+    .chip {
+      padding: 6px 13px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+    }
     .chip:hover { background: #C7D2FE; }
-    #screen-loading { min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(145deg, #0F0C29, #302B63, #24243e); color: white; text-align: center; padding: 40px; }
-    .loading-orb { width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); border: 2.5px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 38px; margin-bottom: 30px; animation: orb-pulse 2s ease-in-out infinite; }
-    @keyframes orb-pulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(167,139,250,0.4); } 50% { transform: scale(1.06); box-shadow: 0 0 0 18px rgba(167,139,250,0); } }
-    .loading-title { font-size: 30px; font-weight: 900; margin-bottom: 12px; letter-spacing: -0.5px; }
-    .loading-msg { font-size: 15px; opacity: 0.7; max-width: 380px; line-height: 1.7; margin-bottom: 36px; min-height: 48px; }
-    .progress-track { width: 300px; height: 5px; background: rgba(255,255,255,0.18); border-radius: 3px; overflow: hidden; }
-    .progress-fill-load { height: 100%; background: linear-gradient(90deg, #A78BFA, white); border-radius: 3px; width: 5%; transition: width 0.6s ease; }
-    .tip-box { margin-top: 44px; padding: 18px 24px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; max-width: 380px; font-size: 13.5px; line-height: 1.65; opacity: 0.8; }
-    .tip-box strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.6; margin-bottom: 5px; }
+
+    /* ══ LOADING SCREEN ══ */
+    #screen-loading {
+      min-height: 100vh;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #0F0C29, #302B63, #24243e);
+      color: white;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .loading-orb {
+      width: 84px; height: 84px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+      border: 2.5px solid rgba(255,255,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 38px;
+      margin-bottom: 30px;
+      animation: orb-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes orb-pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(167,139,250,0.4); }
+      50% { transform: scale(1.06); box-shadow: 0 0 0 18px rgba(167,139,250,0); }
+    }
+
+    .loading-title {
+      font-size: 30px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .loading-msg {
+      font-size: 15px;
+      opacity: 0.7;
+      max-width: 380px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+      min-height: 48px;
+    }
+
+    .progress-track {
+      width: 300px;
+      height: 5px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill-load {
+      height: 100%;
+      background: linear-gradient(90deg, #A78BFA, white);
+      border-radius: 3px;
+      width: 5%;
+      transition: width 0.6s ease;
+    }
+
+    .tip-box {
+      margin-top: 44px;
+      padding: 18px 24px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      max-width: 380px;
+      font-size: 13.5px;
+      line-height: 1.65;
+      opacity: 0.8;
+    }
+    .tip-box strong {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      opacity: 0.6;
+      margin-bottom: 5px;
+    }
+
+    /* ══ PLAN SCREEN ══ */
     #screen-plan { flex-direction: column; min-height: 100vh; }
-    .topbar { background: white; border-bottom: 1px solid var(--border); padding: 0 28px; height: 62px; display: flex; align-items: center; position: sticky; top: 0; z-index: 20; }
-    .topbar-inner { max-width: 1220px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+    .topbar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 0 28px;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .topbar-inner {
+      max-width: 1220px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
     .topbar-brand { display: flex; align-items: center; gap: 9px; }
-    .topbar-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #4F46E5, #8B5CF6); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-    .topbar-name { font-size: 16px; font-weight: 900; color: var(--text); letter-spacing: -0.3px; }
+
+    .topbar-icon {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #4F46E5, #8B5CF6);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .topbar-name {
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
     .topbar-btns { display: flex; gap: 9px; align-items: center; }
-    .btn-dl { padding: 9px 18px; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; border-radius: 9px; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(79,70,229,0.3); transition: opacity 0.15s; }
+
+    .btn-dl {
+      padding: 9px 18px;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      color: white;
+      border: none;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(79,70,229,0.3);
+      transition: opacity 0.15s;
+    }
     .btn-dl:hover { opacity: 0.9; }
-    .btn-new { padding: 9px 18px; background: var(--bg); color: var(--text-2); border: 1.5px solid var(--border); border-radius: 9px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+
+    .btn-new {
+      padding: 9px 18px;
+      background: var(--bg);
+      color: var(--text-2);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
     .btn-new:hover { border-color: var(--primary); color: var(--primary); }
-    .plan-body { max-width: 1220px; margin: 0 auto; width: 100%; padding: 28px 28px 80px; }
-    .hero { background: linear-gradient(145deg, #0F0C29 0%, #302B63 40%, #6D28D9 80%, #8B5CF6 100%); border-radius: 20px; padding: 34px 38px; color: white; margin-bottom: 28px; position: relative; overflow: hidden; }
-    .hero::after { content: '1%'; position: absolute; right: 24px; bottom: -28px; font-size: 160px; font-weight: 900; opacity: 0.07; letter-spacing: -6px; line-height: 1; pointer-events: none; }
-    .hero-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; opacity: 0.55; margin-bottom: 8px; }
-    .hero-goal { font-size: 24px; font-weight: 800; line-height: 1.3; margin-bottom: 26px; max-width: 65%; letter-spacing: -0.3px; }
-    .hero-stats { display: flex; gap: 36px; margin-bottom: 22px; flex-wrap: wrap; }
-    .hstat-val { font-size: 34px; font-weight: 900; line-height: 1; letter-spacing: -1px; }
-    .hstat-lbl { font-size: 11px; opacity: 0.6; margin-top: 4px; font-weight: 500; }
-    .progress-labels { display: flex; justify-content: space-between; font-size: 12px; opacity: 0.7; font-weight: 600; margin-bottom: 7px; }
-    .hero-track { background: rgba(255,255,255,0.18); border-radius: 8px; height: 10px; overflow: hidden; }
-    .hero-fill { height: 100%; background: linear-gradient(90deg, #A5F3FC, #38BDF8, #A78BFA, white); border-radius: 8px; transition: width 0.9s cubic-bezier(0.34, 1.56, 0.64, 1); min-width: 4px; }
-    .grid-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 14px; flex-wrap: wrap; }
+
+    .plan-body {
+      max-width: 1220px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 28px 28px 80px;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, #0F0C29 0%, #302B63 40%, #6D28D9 80%, #8B5CF6 100%);
+      border-radius: 20px;
+      padding: 34px 38px;
+      color: white;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '1%';
+      position: absolute;
+      right: 24px;
+      bottom: -28px;
+      font-size: 160px;
+      font-weight: 900;
+      opacity: 0.07;
+      letter-spacing: -6px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      opacity: 0.55;
+      margin-bottom: 8px;
+    }
+
+    .hero-goal {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 26px;
+      max-width: 65%;
+      letter-spacing: -0.3px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 36px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .hstat-val {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+
+    .hstat-lbl {
+      font-size: 11px;
+      opacity: 0.6;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      opacity: 0.7;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .hero-track {
+      background: rgba(255,255,255,0.18);
+      border-radius: 8px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .hero-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #A5F3FC, #38BDF8, #A78BFA, white);
+      border-radius: 8px;
+      transition: width 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-width: 4px;
+    }
+
+    .grid-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
     .grid-title { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
-    .filter-set { display: flex; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 4px; gap: 4px; }
-    .fbtn { padding: 7px 14px; border-radius: 7px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text-2); transition: all 0.15s; }
+
+    .filter-set {
+      display: flex;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .fbtn {
+      padding: 7px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      color: var(--text-2);
+      transition: all 0.15s;
+    }
     .fbtn.on { background: white; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
     .fbtn:hover:not(.on) { color: var(--primary); }
-    .days-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 9px; }
-    .day-card { aspect-ratio: 1; border-radius: 10px; border: 2px solid var(--border); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: all 0.16s ease; background: white; overflow: hidden; }
-    .day-card:hover { transform: scale(1.08); box-shadow: 0 8px 22px rgba(0,0,0,0.13); border-color: transparent; z-index: 5; }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 9px;
+    }
+
+    .day-card {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.16s ease;
+      background: white;
+      overflow: hidden;
+    }
+
+    .day-card:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.13);
+      border-color: transparent;
+      z-index: 5;
+    }
+
     .day-card.done { border-color: transparent; }
     .day-card.today-hl { border-width: 2.5px; border-color: var(--primary) !important; }
     .day-card.today-hl .dnum { color: var(--primary); }
+
     .dnum { font-size: 16px; font-weight: 800; color: var(--text); line-height: 1; }
     .day-card.done .dnum { color: white; }
-    .dcheck { position: absolute; bottom: 5px; right: 5px; width: 15px; height: 15px; background: rgba(255,255,255,0.28); border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 9px; color: white; }
+
+    .dcheck {
+      position: absolute;
+      bottom: 5px; right: 5px;
+      width: 15px; height: 15px;
+      background: rgba(255,255,255,0.28);
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: white;
+    }
     .day-card.done .dcheck { display: flex; }
     .day-card.hidden { display: none; }
-    .empty { text-align: center; padding: 60px 20px; color: var(--text-3); }
+
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-3);
+    }
     .empty h3 { font-size: 17px; font-weight: 700; color: var(--text-2); margin: 12px 0 5px; }
     .empty p { font-size: 14px; }
-    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.58); backdrop-filter: blur(6px); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+
+    /* ══ MODAL ══ */
+    .modal-bg {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.58);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
     .modal-bg.open { opacity: 1; pointer-events: all; }
-    .modal { background: white; border-radius: 22px; max-width: 490px; width: 100%; box-shadow: 0 40px 80px rgba(0,0,0,0.3); transform: translateY(18px) scale(0.96); transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); max-height: 88vh; overflow-y: auto; }
+
+    .modal {
+      background: white;
+      border-radius: 22px;
+      max-width: 490px;
+      width: 100%;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+      transform: translateY(18px) scale(0.96);
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+
     .modal-bg.open .modal { transform: translateY(0) scale(1); }
+
     .modal-top { padding: 26px 26px 0; }
-    .modal-row1 { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
-    .modal-pill { display: inline-flex; align-items: center; padding: 7px 16px; border-radius: 50px; font-size: 12.5px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 1px; }
-    .modal-x { background: var(--bg); border: 1.5px solid var(--border); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; color: var(--text-2); flex-shrink: 0; transition: all 0.15s; }
+
+    .modal-row1 {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .modal-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 16px;
+      border-radius: 50px;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .modal-x {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      color: var(--text-2);
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
     .modal-x:hover { background: #FEE2E2; color: #DC2626; border-color: #FCA5A5; }
+
     .modal-focus { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.8px; margin-bottom: 5px; }
     .modal-title { font-size: 21px; font-weight: 800; color: var(--text); line-height: 1.3; margin-bottom: 14px; letter-spacing: -0.3px; }
+
     .modal-mid { padding: 0 26px; }
-    .modal-action { font-size: 15px; color: var(--text-2); line-height: 1.75; background: var(--bg); border-radius: 12px; padding: 16px 18px; border-left: 3.5px solid; }
-    .modal-foot { padding: 18px 26px 26px; display: flex; gap: 10px; align-items: center; border-top: 1px solid var(--border); margin-top: 18px; }
-    .btn-mark { flex: 1; padding: 13px; border-radius: 10px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s; }
+
+    .modal-action {
+      font-size: 15px;
+      color: var(--text-2);
+      line-height: 1.75;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 16px 18px;
+      border-left: 3.5px solid;
+    }
+
+    .modal-foot {
+      padding: 18px 26px 26px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      margin-top: 18px;
+    }
+
+    .btn-mark {
+      flex: 1; padding: 13px; border-radius: 10px; border: none;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; transition: all 0.15s;
+    }
     .btn-mark.mk-done { background: linear-gradient(135deg, #10B981, #059669); color: white; box-shadow: 0 4px 14px rgba(16,185,129,0.35); }
     .btn-mark.mk-undo { background: #FEF3C7; color: #D97706; }
     .btn-mark:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-mark:active { transform: translateY(0); }
+
     .nav-arrows { display: flex; gap: 7px; }
-    .arr { width: 42px; height: 42px; border-radius: 10px; border: 2px solid var(--border); background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-2); transition: all 0.15s; }
+
+    .arr {
+      width: 42px; height: 42px; border-radius: 10px;
+      border: 2px solid var(--border); background: white;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 16px; color: var(--text-2); transition: all 0.15s;
+    }
     .arr:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
     .arr:disabled { opacity: 0.35; cursor: not-allowed; }
-    .celebrate-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+
+    /* Celebration */
+    .celebrate-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
     .celebrate-overlay.show { opacity: 1; pointer-events: all; }
     .celebrate-card { background: white; border-radius: 24px; padding: 48px 40px; text-align: center; max-width: 420px; width: 100%; box-shadow: 0 40px 80px rgba(0,0,0,0.4); }
     .celebrate-emoji { font-size: 72px; margin-bottom: 16px; }
     .celebrate-title { font-size: 32px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 12px; color: var(--text); }
     .celebrate-msg { font-size: 15px; color: var(--text-2); line-height: 1.7; margin-bottom: 28px; }
     .btn-celebrate { padding: 14px 28px; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; }
+
+    /* ══ QUIZ SCREEN ══ */
+    #screen-quiz {
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: linear-gradient(145deg, #0F0C29, #302B63, #24243e);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #screen-quiz::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 65%);
+      top: -200px; right: -150px;
+      pointer-events: none;
+    }
+
+    .quiz-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 24px;
+      padding: 40px 48px;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.45);
+      position: relative;
+      z-index: 1;
+    }
+
+    .quiz-progress-track {
+      height: 6px;
+      background: #E2E8F0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4F46E5, #8B5CF6);
+      border-radius: 4px;
+      transition: width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .quiz-step-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 28px;
+    }
+
+    .quiz-q-text {
+      font-size: 25px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.25;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .quiz-q-sub {
+      font-size: 14px;
+      color: var(--text-2);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 28px;
+    }
+
+    .quiz-opt {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      text-align: left;
+      width: 100%;
+    }
+
+    .quiz-opt:hover { border-color: var(--primary); background: var(--primary-light); }
+
+    .quiz-opt.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+    }
+
+    .quiz-opt-emoji { font-size: 24px; flex-shrink: 0; width: 34px; text-align: center; }
+
+    .quiz-opt-text { flex: 1; min-width: 0; }
+    .quiz-opt-text strong { display: block; font-size: 14.5px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .quiz-opt-text span { font-size: 12.5px; color: var(--text-2); }
+    .quiz-opt.selected .quiz-opt-text strong { color: var(--primary); }
+
+    .quiz-opt-check {
+      width: 22px; height: 22px; border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: transparent; flex-shrink: 0; transition: all 0.16s;
+    }
+    .quiz-opt.selected .quiz-opt-check { background: var(--primary); border-color: var(--primary); color: white; }
+
+    .quiz-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+    .quiz-back {
+      padding: 13px 18px; background: transparent; color: var(--text-2);
+      border: 1.5px solid var(--border); border-radius: var(--radius);
+      font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+    }
+    .quiz-back:hover { border-color: var(--primary); color: var(--primary); }
+    .quiz-back.invisible { visibility: hidden; pointer-events: none; }
+
+    .quiz-continue {
+      flex: 1; padding: 14px; background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      color: white; border: none; border-radius: var(--radius);
+      font-size: 15px; font-weight: 800; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 8px 24px rgba(79,70,229,0.35);
+    }
+    .quiz-continue:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(79,70,229,0.45); }
+    .quiz-continue:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; transform: none !important; }
+
+    .quiz-question-area { transition: opacity 0.16s ease; }
+    .quiz-question-area.fading { opacity: 0; }
+
+    /* Responsive */
     @media (max-width: 1000px) { .days-grid { grid-template-columns: repeat(8, 1fr); } }
-    @media (max-width: 750px) { .days-grid { grid-template-columns: repeat(6, 1fr); } .hero-goal { max-width: 100%; font-size: 19px; } .plan-body { padding: 18px 16px 60px; } .topbar { padding: 0 16px; } .hero { padding: 24px; } }
-    @media (max-width: 520px) { .days-grid { grid-template-columns: repeat(5, 1fr); } .setup-card { padding: 30px 22px; } }
+    @media (max-width: 750px) {
+      .days-grid { grid-template-columns: repeat(6, 1fr); }
+      .hero-goal { max-width: 100%; font-size: 19px; }
+      .plan-body { padding: 18px 16px 60px; }
+      .topbar { padding: 0 16px; }
+      .hero { padding: 24px; }
+    }
+    @media (max-width: 520px) {
+      .days-grid { grid-template-columns: repeat(5, 1fr); }
+      .setup-card { padding: 30px 22px; }
+    }
   </style>
 </head>
 <body>
+
+<!-- SETUP -->
 <div id="screen-setup" class="screen active">
   <div class="setup-card">
-    <div class="brand"><div class="brand-icon">🎾</div><div class="brand-text"><strong>1% Better</strong><span>100 Day Journey Planner</span></div></div>
-    <div id="resume-bar" class="resume-bar"><div class="resume-bar-icon">🔄</div><div class="resume-bar-text"><strong>Continue your journey?</strong><span id="resume-desc">You have a journey in progress.</span></div><button class="btn-resume" onclick="resumeJourney()">Resume →</button></div>
+    <div class="brand">
+      <div class="brand-icon">🎾</div>
+      <div class="brand-text">
+        <strong>1% Better</strong>
+        <span>100 Day Journey Planner</span>
+      </div>
+    </div>
+
+    <div id="resume-bar" class="resume-bar">
+      <div class="resume-bar-icon">🔄</div>
+      <div class="resume-bar-text">
+        <strong>Continue your journey?</strong>
+        <span id="resume-desc">You have a journey in progress.</span>
+      </div>
+      <button class="btn-resume" onclick="resumeJourney()">Resume →</button>
+    </div>
+
     <h2 class="setup-heading">What's your<br>100-day goal?</h2>
     <p class="setup-sub">Describe your desired outcome and we'll craft a personalized roadmap — one tiny 1% step per day — that compounds into transformation.</p>
-    <div class="form-group"><label for="goal-input">Your Goal</label><textarea id="goal-input" placeholder="e.g. Grow stronger in my Christian faith, Run my first 5K, Build a daily mindfulness practice..."></textarea></div>
+
+    <div class="form-group">
+      <label for="goal-input">Your Goal</label>
+      <textarea id="goal-input" placeholder="e.g. Grow stronger in my Christian faith, Run my first 5K, Build a daily mindfulness practice…"></textarea>
+    </div>
+
     <button class="btn-go" id="btn-go" onclick="startJourney()">✨ Generate My 100-Day Journey</button>
+
     <div id="err-box" class="error-box"></div>
-    <div class="examples"><p class="examples-label">Try an example goal</p><div class="chips"><button class="chip" onclick="useExample('Grow stronger in my Christian faith')">🙏 Christian faith</button><button class="chip" onclick="useExample('Run my first 5K')">🏃 Run a 5K</button><button class="chip" onclick="useExample('Read at least one book per month')">📚 Read more books</button><button class="chip" onclick="useExample('Build a daily meditation practice')">🧘 Daily meditation</button><button class="chip" onclick="useExample('Build visible muscle and get stronger')">💪 Build muscle</button><button class="chip" onclick="useExample('Write in my journal every single day')">✍️ Daily journaling</button></div></div>
+
+    <div class="examples">
+      <p class="examples-label">Try an example goal</p>
+      <div class="chips">
+        <button class="chip" onclick="useExample('Grow stronger in my Christian faith')">🙏 Christian faith</button>
+        <button class="chip" onclick="useExample('Run my first 5K')">🏃 Run a 5K</button>
+        <button class="chip" onclick="useExample('Read at least one book per month')">📚 Read more books</button>
+        <button class="chip" onclick="useExample('Build a daily meditation practice')">🧘 Daily meditation</button>
+        <button class="chip" onclick="useExample('Build visible muscle and get stronger')">💪 Build muscle</button>
+        <button class="chip" onclick="useExample('Write in my journal every single day')">✍️ Daily journaling</button>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- QUIZ -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-card">
+    <div class="brand" style="margin-bottom:28px">
+      <div class="brand-icon">🎾</div>
+      <div class="brand-text">
+        <strong>1% Better</strong>
+        <span>Personalizing your journey</span>
+      </div>
+    </div>
+    <div class="quiz-progress-track">
+      <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:33%"></div>
+    </div>
+    <div class="quiz-step-label" id="quiz-step-label">Question 1 of 3</div>
+    <div class="quiz-question-area" id="quiz-question-area"></div>
+    <div class="quiz-nav">
+      <button class="quiz-back invisible" id="quiz-back" onclick="quizBack()">← Back</button>
+      <button class="quiz-continue" id="quiz-continue" onclick="quizNext()" disabled>Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
 <div id="screen-loading" class="screen">
   <div class="loading-orb">✨</div>
   <div class="loading-title">Building Your Journey</div>
-  <div class="loading-msg" id="load-msg">Analyzing your goal and designing your arc...</div>
-  <div class="progress-track"><div class="progress-fill-load" id="load-bar"></div></div>
-  <div class="tip-box"><strong>💡 The 1% Principle</strong>Getting just 1% better every day means you'll be 37x better after one year. British Cycling used this exact idea to go from mediocre to winning the Tour de France five times.</div>
-</div>
-<div id="screen-plan" class="screen">
-  <div class="topbar"><div class="topbar-inner"><div class="topbar-brand"><div class="topbar-icon">🎾</div><span class="topbar-name">1% Better</span></div><div class="topbar-btns"><button class="btn-dl" onclick="downloadPDF()">⬇️ Download PDF</button><button class="btn-new" onclick="newJourney()">+ New Goal</button></div></div></div>
-  <div class="plan-body">
-    <div class="hero"><div class="hero-label">Your 100-Day Goal</div><div class="hero-goal" id="hero-goal">—</div><div class="hero-stats"><div><div class="hstat-val" id="stat-done">0</div><div class="hstat-lbl">Days Complete</div></div><div><div class="hstat-val" id="stat-left">100</div><div class="hstat-lbl">Days Remaining</div></div><div><div class="hstat-val" id="stat-streak">0</div><div class="hstat-lbl">Current Streak</div></div><div><div class="hstat-val" id="stat-pct">0%</div><div class="hstat-lbl">Complete</div></div></div><div class="progress-labels"><span>Day 1</span><span id="prog-label">0% there</span><span>Day 100</span></div><div class="hero-track"><div class="hero-fill" id="hero-fill" style="width:1%"></div></div></div>
-    <div class="grid-header"><div class="grid-title" id="section-title">All 100 Days</div><div class="filter-set"><button class="fbtn on" onclick="setFilter('all',this)">All</button><button class="fbtn" onclick="setFilter('today',this)">Today</button><button class="fbtn" onclick="setFilter('done',this)">Completed</button><button class="fbtn" onclick="setFilter('left',this)">Remaining</button></div></div>
-    <div class="days-grid" id="days-grid"></div>
-    <div class="empty" id="empty-state" style="display:none"><div style="font-size:48px">🎯</div><h3>Nothing here yet</h3><p>Try a different filter.</p></div>
+  <div class="loading-msg" id="load-msg">Analyzing your goal and designing your arc…</div>
+  <div class="progress-track">
+    <div class="progress-fill-load" id="load-bar"></div>
+  </div>
+  <div class="tip-box">
+    <strong>💡 The 1% Principle</strong>
+    Getting just 1% better every day means you'll be 37× better after one year. British Cycling used this exact idea to go from mediocre to winning the Tour de France five times.
   </div>
 </div>
+
+<!-- PLAN -->
+<div id="screen-plan" class="screen">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand">
+        <div class="topbar-icon">🎾</div>
+        <span class="topbar-name">1% Better</span>
+      </div>
+      <div class="topbar-btns">
+        <button class="btn-dl" onclick="downloadPDF()">⬇️ Download PDF</button>
+        <button class="btn-new" onclick="newJourney()">+ New Goal</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="plan-body">
+    <div class="hero">
+      <div class="hero-label">Your 100-Day Goal</div>
+      <div class="hero-goal" id="hero-goal">—</div>
+      <div class="hero-stats">
+        <div><div class="hstat-val" id="stat-done">0</div><div class="hstat-lbl">Days Complete</div></div>
+        <div><div class="hstat-val" id="stat-left">100</div><div class="hstat-lbl">Days Remaining</div></div>
+        <div><div class="hstat-val" id="stat-streak">0</div><div class="hstat-lbl">Current Streak</div></div>
+        <div><div class="hstat-val" id="stat-pct">0%</div><div class="hstat-lbl">Complete</div></div>
+      </div>
+      <div class="progress-labels">
+        <span>Day 1</span>
+        <span id="prog-label">0% there</span>
+        <span>Day 100</span>
+      </div>
+      <div class="hero-track">
+        <div class="hero-fill" id="hero-fill" style="width:1%"></div>
+      </div>
+    </div>
+
+    <div class="grid-header">
+      <div class="grid-title" id="section-title">All 100 Days</div>
+      <div class="filter-set">
+        <button class="fbtn on" onclick="setFilter('all', this)">All</button>
+        <button class="fbtn" onclick="setFilter('today', this)">Today</button>
+        <button class="fbtn" onclick="setFilter('done', this)">Completed</button>
+        <button class="fbtn" onclick="setFilter('left', this)">Remaining</button>
+      </div>
+    </div>
+
+    <div class="days-grid" id="days-grid"></div>
+    <div class="empty" id="empty-state" style="display:none">
+      <div style="font-size:48px">🎯</div>
+      <h3>Nothing here yet</h3>
+      <p>Try a different filter.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
 <div id="modal-bg" class="modal-bg" onclick="bgClose(event)">
   <div class="modal" id="modal">
-    <div class="modal-top"><div class="modal-row1"><div class="modal-pill" id="m-pill">Day 1</div><button class="modal-x" onclick="closeModal()">✕</button></div><div class="modal-focus" id="m-focus"></div><div class="modal-title" id="m-title"></div></div>
-    <div class="modal-mid"><div class="modal-action" id="m-action"></div></div>
-    <div class="modal-foot"><button class="btn-mark mk-done" id="btn-mark" onclick="toggleDone()"><span id="mark-icon">✓</span><span id="mark-txt">Mark Complete</span></button><div class="nav-arrows"><button class="arr" id="btn-prev" onclick="navDay(-1)">←</button><button class="arr" id="btn-next" onclick="navDay(1)">→</button></div></div>
+    <div class="modal-top">
+      <div class="modal-row1">
+        <div class="modal-pill" id="m-pill">Day 1</div>
+        <button class="modal-x" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-focus" id="m-focus"></div>
+      <div class="modal-title" id="m-title"></div>
+    </div>
+    <div class="modal-mid">
+      <div class="modal-action" id="m-action"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-mark mk-done" id="btn-mark" onclick="toggleDone()">
+        <span id="mark-icon">✓</span>
+        <span id="mark-txt">Mark Complete</span>
+      </button>
+      <div class="nav-arrows">
+        <button class="arr" id="btn-prev" onclick="navDay(-1)">←</button>
+        <button class="arr" id="btn-next" onclick="navDay(1)">→</button>
+      </div>
+    </div>
   </div>
 </div>
-<div id="celebrate" class="celebrate-overlay"><div class="celebrate-card"><div class="celebrate-emoji">🏆</div><div class="celebrate-title">100 Days Done!</div><div class="celebrate-msg">You committed. You showed up. You improved 1% every single day. That's what champions are made of!</div><button class="btn-celebrate" onclick="closeCelebrate()">Download My Certificate →</button></div></div>
+
+<!-- CELEBRATION -->
+<div id="celebrate" class="celebrate-overlay">
+  <div class="celebrate-card">
+    <div class="celebrate-emoji">🏆</div>
+    <div class="celebrate-title">100 Days Done!</div>
+    <div class="celebrate-msg">You committed. You showed up. You improved 1% every single day. That's what champions are made of — congratulations on completing your journey!</div>
+    <button class="btn-celebrate" onclick="closeCelebrate()">Download My Certificate →</button>
+  </div>
+</div>
+
 <script>
-const S={goal:'',days:[],completed:new Set(),filter:'all',modalIdx:-1};
-const STORE='1pct_journey_v1';
-function hexRGB(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
-function lerp3(c1,c2,t){const[r1,g1,b1]=hexRGB(c1),[r2,g2,b2]=hexRGB(c2);return `rgb(${Math.round(r1+(r2-r1)*t)},${Math.round(g1+(g2-g1)*t)},${Math.round(b1+(b2-b1)*t)})`;}
-function lerp3raw(c1,c2,t){const[r1,g1,b1]=hexRGB(c1),[r2,g2,b2]=hexRGB(c2);return[Math.round(r1+(r2-r1)*t),Math.round(g1+(g2-g1)*t),Math.round(b1+(b2-b1)*t)];}
-function dayColor(n){const t=(n-1)/99;return t<0.5?lerp3('#4F46E5','#8B5CF6',t*2):lerp3('#8B5CF6','#F59E0B',(t-0.5)*2);}
-function dayColorRaw(n){const t=(n-1)/99;return t<0.5?lerp3raw('#4F46E5','#8B5CF6',t*2):lerp3raw('#8B5CF6','#F59E0B',(t-0.5)*2);}
-window.onload=()=>checkResume();
-function checkResume(){try{const d=JSON.parse(localStorage.getItem(STORE));if(d?.goal&&Array.isArray(d.days)&&d.days.length>=90){const done=(d.completed||[]).length;document.getElementById('resume-desc').textContent=`"${d.goal.slice(0,48)}${d.goal.length>48?'...':''}" — ${done}/100 days done`;document.getElementById('resume-bar').classList.add('show');}}catch(e){}}
-function resumeJourney(){try{const d=JSON.parse(localStorage.getItem(STORE));S.goal=d.goal;S.days=d.days;S.completed=new Set(d.completed||[]);showPlan();}catch(e){showErr('Could not load saved journey.');}}
-function useExample(txt){document.getElementById('goal-input').value=txt;}
-function showErr(msg){const b=document.getElementById('err-box');b.textContent=msg;b.classList.add('show');}
-function hideErr(){document.getElementById('err-box').classList.remove('show');}
-async function startJourney(){const goal=document.getElementById('goal-input').value.trim();if(!goal){showErr('Please describe your goal to get started.');return;}hideErr();S.goal=goal;showScreen('loading');runLoadingAnim();try{S.days=await callAPI(goal);S.completed=new Set();saveState();showPlan();}catch(err){showScreen('setup');showErr(err.message||'Something went wrong. Please try again.');}}
-function runLoadingAnim(){const bar=document.getElementById('load-bar'),msg=document.getElementById('load-msg');const steps=[[12,'Analyzing your goal...'],[28,'Designing your 100-day arc...'],[46,'Crafting your daily action steps...'],[63,'Building in progressive challenge...'],[78,'Adding reflection and milestone moments...'],[91,'Putting on the finishing touches...']];let i=0;const tick=()=>{if(i<steps.length){bar.style.width=steps[i][0]+'%';msg.textContent=steps[i][1];i++;setTimeout(tick,2500);}};tick();}
-async function callAPI(goal){const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({goal})});if(!res.ok){const err=await res.json().catch(()=>({}));if(res.status===503)throw new Error('The server is not configured yet. Please contact the app owner.');throw new Error(err.error||`Server error (${res.status}). Please try again.`);}const data=await res.json();if(!Array.isArray(data.days)||data.days.length<90){throw new Error('Received an incomplete plan. Please try again.');}return data.days;}
-function showPlan(){document.getElementById('hero-goal').textContent=S.goal;renderGrid();updateStats();showScreen('plan');}
-function todayIdx(){for(let i=0;i<100;i++)if(!S.completed.has(i))return i;return 99;}
-function renderGrid(){const grid=document.getElementById('days-grid');grid.innerHTML='';const ti=todayIdx();let shown=0;S.days.forEach((day,i)=>{const done=S.completed.has(i),isToday=(i===ti)&&!done;let vis=false;if(S.filter==='all')vis=true;else if(S.filter==='done')vis=done;else if(S.filter==='left')vis=!done;else if(S.filter==='today')vis=isToday;const card=document.createElement('div');card.className=`day-card${done?' done':''}${isToday?' today-hl':''}${!vis?' hidden':''}`;card.title=day.title||'';card.onclick=()=>openModal(i);if(done){card.style.background=dayColor(day.day||i+1);}card.innerHTML=`<span class="dnum">${day.day||i+1}</span><span class="dcheck">✓</span>`;grid.appendChild(card);if(vis)shown++;});const empty=document.getElementById('empty-state');empty.style.display=shown===0?'block':'none';grid.style.display=shown===0?'none':'grid';const titles={all:'All 100 Days',done:'Completed Days',left:'Remaining Days',today:"Today's Step"};document.getElementById('section-title').textContent=titles[S.filter]||'All 100 Days';}
-function updateStats(){const done=S.completed.size,pct=done;document.getElementById('stat-done').textContent=done;document.getElementById('stat-left').textContent=100-done;document.getElementById('stat-pct').textContent=pct+'%';document.getElementById('hero-fill').style.width=Math.max(1,pct)+'%';document.getElementById('prog-label').textContent=pct+'% there';let streak=0;const ti=todayIdx();for(let i=ti-1;i>=0;i--){if(S.completed.has(i))streak++;else break;}document.getElementById('stat-streak').textContent=streak;}
-function setFilter(f,btn){S.filter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderGrid();}
-function openModal(i){S.modalIdx=i;renderModal(i);document.getElementById('modal-bg').classList.add('open');}
-function renderModal(i){const day=S.days[i];if(!day)return;const done=S.completed.has(i),col=dayColor(day.day||i+1);document.getElementById('m-pill').textContent=`Day ${day.day||i+1}`;document.getElementById('m-pill').style.background=col;document.getElementById('m-focus').textContent=day.focus?`✦ ${day.focus}`:'';document.getElementById('m-focus').style.color=col;document.getElementById('m-title').textContent=day.title||'';document.getElementById('m-action').textContent=day.action||'';document.getElementById('m-action').style.borderLeftColor=col;const btn=document.getElementById('btn-mark');if(done){btn.className='btn-mark mk-undo';document.getElementById('mark-icon').textContent='↩';document.getElementById('mark-txt').textContent='Mark Incomplete';}else{btn.className='btn-mark mk-done';document.getElementById('mark-icon').textContent='✓';document.getElementById('mark-txt').textContent='Mark Complete';}document.getElementById('btn-prev').disabled=(i===0);document.getElementById('btn-next').disabled=(i>=S.days.length-1);}
-function bgClose(e){if(e.target===document.getElementById('modal-bg'))closeModal();}
-function closeModal(){document.getElementById('modal-bg').classList.remove('open');S.modalIdx=-1;}
-function toggleDone(){const i=S.modalIdx;if(i<0)return;if(S.completed.has(i))S.completed.delete(i);else S.completed.add(i);saveState();renderModal(i);renderGrid();updateStats();if(S.completed.size===100)setTimeout(showCelebrate,600);}
-function navDay(d){const ni=S.modalIdx+d;if(ni<0||ni>=S.days.length)return;S.modalIdx=ni;renderModal(ni);}
-function showCelebrate(){document.getElementById('celebrate').classList.add('show');}
-function closeCelebrate(){document.getElementById('celebrate').classList.remove('show');downloadPDF();}
-function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+n).classList.add('active');}
-function saveState(){localStorage.setItem(STORE,JSON.stringify({goal:S.goal,days:S.days,completed:Array.from(S.completed)}));}
-function newJourney(){if(confirm('Start a fresh journey? Your current progress stays saved.')){{showScreen('setup');checkResume();}}}
-function downloadPDF(){if(!window.jspdf){alert('PDF library not loaded.');return;}if(!S.days.length){alert('No journey to download yet!');return;}const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const PW=210,PH=297,M=20;doc.setFillColor(15,12,41);doc.rect(0,0,PW,PH,'F');doc.setFillColor(79,70,229);doc.rect(0,0,7,PH,'F');doc.setFillColor(109,40,217);doc.circle(PW+10,0,70,'F');doc.setFillColor(139,92,246);doc.circle(PW-10,20,45,'F');doc.setTextColor(167,139,250);doc.setFontSize(10);doc.setFont('helvetica','bold');doc.text('1% BETTER',M+4,44);doc.setTextColor(255,255,255);doc.setFontSize(36);doc.text('Your 100-Day',M+4,68);doc.text('Journey Plan',M+4,83);doc.setDrawColor(79,70,229);doc.setLineWidth(0.6);doc.line(M+4,92,PW-M,92);doc.setFontSize(10);doc.setFont('helvetica','italic');doc.setTextColor(167,139,250);doc.text('Goal:',M+4,105);doc.setFontSize(15);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);doc.text(doc.splitTextToSize(S.goal,PW-M*2-4),M+4,117);const sy=175;[[100+'','Total days'],[S.completed.size+'','Days done'],[Math.round(S.completed.size)+'%','Progress']].forEach(([v,l],idx)=>{const x=M+4+idx*56;doc.setFontSize(28);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);doc.text(v,x,sy);doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(167,139,250);doc.text(l,x,sy+8);});doc.setFontSize(9);doc.setTextColor(100,100,130);doc.text('Generated '+new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}),M+4,PH-18);for(let start=0;start<100;start+=10){doc.addPage();doc.setFillColor(248,250,252);doc.rect(0,0,PW,PH,'F');doc.setFillColor(15,12,41);doc.rect(0,0,PW,18,'F');doc.setTextColor(255,255,255);doc.setFontSize(8);doc.setFont('helvetica','bold');doc.text('1% BETTER - 100 DAY JOURNEY',M,12);doc.setFont('helvetica','normal');doc.text(`Days ${start+1}-${Math.min(start+10,100)}`,PW-M,12,{align:'right'});let y=32;const rh=25;for(let i=start;i<Math.min(start+10,100);i++){const day=S.days[i];if(!day)continue;const done=S.completed.has(i);const[cr,cg,cb]=dayColorRaw(day.day||i+1);if(i%2===1){doc.setFillColor(241,245,249);doc.rect(M-3,y-5,PW-M*2+6,rh,'F');}if(done){doc.setFillColor(cr,cg,cb);doc.circle(M+2,y+5,4,'F');doc.setTextColor(255,255,255);doc.setFontSize(6.5);doc.text('✓',M-0.5,y+7.5);}else{doc.setDrawColor(cr,cg,cb);doc.setLineWidth(0.4);doc.circle(M+2,y+5,4,'S');}doc.setFillColor(cr,cg,cb);doc.roundedRect(M+9,y-1.5,14,11,2,2,'F');doc.setTextColor(255,255,255);doc.setFontSize(7.5);doc.setFont('helvetica','bold');doc.text(String(day.day||i+1),M+16,y+7,{align:'center'});doc.setTextColor(15,23,42);doc.setFontSize(10);doc.setFont('helvetica','bold');doc.text(day.title||'',M+27,y+4);doc.setTextColor(71,85,105);doc.setFontSize(8);doc.setFont('helvetica','normal');const aLines=doc.splitTextToSize(day.action||'',PW-M*2-30);doc.text(aLines[0]+(aLines.length>1?'...':''),M+27,y+12);if(day.focus){doc.setTextColor(cr,cg,cb);doc.setFontSize(7);doc.setFont('helvetica','bold');doc.text(day.focus.toUpperCase(),M+27,y+19);}y+=rh;}doc.setDrawColor(226,232,240);doc.setLineWidth(0.3);doc.line(M,PH-16,PW-M,PH-16);doc.setTextColor(148,163,184);doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.text('1% Better - 100 Day Journey',M,PH-9);doc.text('Page '+(Math.floor(start/10)+2),PW-M,PH-9,{align:'right'});}doc.save('1percent-'+S.goal.slice(0,28).replace(/[^a-z0-9]/gi,'-').toLowerCase()+'.pdf');}
+// ── STATE ──
+const S = { goal:'', days:[], completed:new Set(), filter:'all', modalIdx:-1, quiz:{} };
+const STORE = '1pct_journey_v1';
+
+// ── QUIZ DATA ──
+let quizStep = 0;
+const QUIZ = [
+  {
+    id: 'startingPoint',
+    question: 'Where are you starting from?',
+    subtitle: 'This helps us calibrate the pace and depth of your journey.',
+    options: [
+      { value: 'beginner',  emoji: '🌱', label: 'Brand new',         desc: "I'm starting from scratch" },
+      { value: 'some',      emoji: '🏃', label: 'Some experience',   desc: "I've explored this before but never stuck with it" },
+      { value: 'practiced', emoji: '🎯', label: 'Practiced',         desc: "I have a foundation — I want to go deeper" },
+    ]
+  },
+  {
+    id: 'timeCommitment',
+    question: 'How much time can you commit each day?',
+    subtitle: "We'll design your daily steps to fit your real life.",
+    options: [
+      { value: '5min',   emoji: '⚡', label: '5–10 minutes',  desc: 'Micro-habits only — tiny wins that compound' },
+      { value: '20min',  emoji: '🕐', label: '15–20 minutes', desc: 'A focused daily window I can protect' },
+      { value: '45min',  emoji: '💪', label: '30–45 minutes', desc: "Serious commitment — I'm ready to work" },
+      { value: '60min+', emoji: '🔥', label: '1 hour+',       desc: 'All in — full transformation is the goal' },
+    ]
+  },
+  {
+    id: 'learningStyle',
+    question: 'How do you grow best?',
+    subtitle: "Your plan will be shaped around your natural strengths.",
+    options: [
+      { value: 'solo',      emoji: '🧘', label: 'Solo & reflective',    desc: 'Journaling, thinking, private practice' },
+      { value: 'active',    emoji: '🛠️', label: 'Active & hands-on',    desc: 'Building, experimenting, learning by doing' },
+      { value: 'community', emoji: '👥', label: 'Community & shared',   desc: 'Accountability partners, sharing progress with others' },
+    ]
+  }
+];
+
+// ── COLORS ──
+function hexRGB(h) { return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]; }
+function lerp3(c1,c2,t) {
+  const [r1,g1,b1]=hexRGB(c1),[r2,g2,b2]=hexRGB(c2);
+  return `rgb(${Math.round(r1+(r2-r1)*t)},${Math.round(g1+(g2-g1)*t)},${Math.round(b1+(b2-b1)*t)})`;
+}
+function lerp3raw(c1,c2,t) {
+  const [r1,g1,b1]=hexRGB(c1),[r2,g2,b2]=hexRGB(c2);
+  return [Math.round(r1+(r2-r1)*t),Math.round(g1+(g2-g1)*t),Math.round(b1+(b2-b1)*t)];
+}
+function dayColor(n) {
+  const t=(n-1)/99;
+  return t<0.5 ? lerp3('#4F46E5','#8B5CF6',t*2) : lerp3('#8B5CF6','#F59E0B',(t-0.5)*2);
+}
+function dayColorRaw(n) {
+  const t=(n-1)/99;
+  return t<0.5 ? lerp3raw('#4F46E5','#8B5CF6',t*2) : lerp3raw('#8B5CF6','#F59E0B',(t-0.5)*2);
+}
+
+// ── INIT ──
+window.onload = () => checkResume();
+
+function checkResume() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORE));
+    if (d?.goal && Array.isArray(d.days) && d.days.length >= 90) {
+      const done = (d.completed||[]).length;
+      document.getElementById('resume-desc').textContent =
+        `"${d.goal.slice(0,48)}${d.goal.length>48?'…':''}" — ${done}/100 days done`;
+      document.getElementById('resume-bar').classList.add('show');
+    }
+  } catch(e) {}
+}
+
+function resumeJourney() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORE));
+    S.goal=d.goal; S.days=d.days; S.completed=new Set(d.completed||[]);
+    showPlan();
+  } catch(e) { showErr('Could not load saved journey.'); }
+}
+
+function useExample(txt) { document.getElementById('goal-input').value = txt; }
+
+function showErr(msg) { const b=document.getElementById('err-box'); b.textContent=msg; b.classList.add('show'); }
+function hideErr() { document.getElementById('err-box').classList.remove('show'); }
+
+// ── START → QUIZ ──
+function startJourney() {
+  const goal = document.getElementById('goal-input').value.trim();
+  if (!goal) { showErr('Please describe your goal to get started.'); return; }
+  hideErr();
+  S.goal = goal;
+  S.quiz = {};
+  quizStep = 0;
+  renderQuizQuestion(0);
+  showScreen('quiz');
+}
+
+// ── QUIZ LOGIC ──
+function renderQuizQuestion(step) {
+  const q = QUIZ[step];
+  const pct = Math.round((step + 1) / QUIZ.length * 100);
+  document.getElementById('quiz-progress-fill').style.width = pct + '%';
+  document.getElementById('quiz-step-label').textContent = `Question ${step + 1} of ${QUIZ.length}`;
+
+  const area = document.getElementById('quiz-question-area');
+  area.classList.add('fading');
+  setTimeout(() => {
+    area.innerHTML = `
+      <div class="quiz-q-text">${q.question}</div>
+      <div class="quiz-q-sub">${q.subtitle}</div>
+      <div class="quiz-options">
+        ${q.options.map(opt => `
+          <button class="quiz-opt${S.quiz[q.id]===opt.value?' selected':''}"
+            data-value="${opt.value}" onclick="selectQuizOpt(this,'${q.id}','${opt.value}')">
+            <span class="quiz-opt-emoji">${opt.emoji}</span>
+            <div class="quiz-opt-text">
+              <strong>${opt.label}</strong>
+              <span>${opt.desc}</span>
+            </div>
+            <span class="quiz-opt-check">✓</span>
+          </button>`).join('')}
+      </div>`;
+    area.classList.remove('fading');
+    const cont = document.getElementById('quiz-continue');
+    cont.disabled = !S.quiz[q.id];
+    cont.textContent = step < QUIZ.length - 1 ? 'Continue →' : 'Build My Journey ✨';
+  }, 160);
+
+  const back = document.getElementById('quiz-back');
+  back.classList.toggle('invisible', step === 0);
+}
+
+function selectQuizOpt(btn, qId, value) {
+  btn.closest('.quiz-options').querySelectorAll('.quiz-opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  S.quiz[qId] = value;
+  document.getElementById('quiz-continue').disabled = false;
+}
+
+function quizNext() {
+  if (quizStep < QUIZ.length - 1) {
+    quizStep++;
+    renderQuizQuestion(quizStep);
+  } else {
+    launchWithQuiz();
+  }
+}
+
+function quizBack() {
+  if (quizStep > 0) {
+    quizStep--;
+    renderQuizQuestion(quizStep);
+  } else {
+    showScreen('setup');
+  }
+}
+
+async function launchWithQuiz() {
+  showScreen('loading');
+  runLoadingAnim();
+  try {
+    S.days = await callAPI(S.goal, S.quiz);
+    S.completed = new Set();
+    saveState();
+    showPlan();
+  } catch(err) {
+    showScreen('quiz');
+    alert(err.message || 'Something went wrong. Please try again.');
+  }
+}
+
+function runLoadingAnim() {
+  const bar=document.getElementById('load-bar'), msg=document.getElementById('load-msg');
+  const steps=[[12,'Analyzing your goal…'],[28,'Designing your 100-day arc…'],[46,'Crafting your daily action steps…'],[63,'Building in progressive challenge…'],[78,'Adding reflection and milestone moments…'],[91,'Putting on the finishing touches…']];
+  let i=0;
+  const tick=()=>{ if(i<steps.length){ bar.style.width=steps[i][0]+'%'; msg.textContent=steps[i][1]; i++; setTimeout(tick,2500); } };
+  tick();
+}
+
+// ── API CALL (goes to our serverless proxy — no key exposed) ──
+async function callAPI(goal, quiz = {}) {
+  const res = await fetch('/api/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ goal, quiz }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    if (res.status === 503) throw new Error('The server is not configured yet. Please contact the app owner.');
+    throw new Error(err.error || `Server error (${res.status}). Please try again.`);
+  }
+
+  const data = await res.json();
+  if (!Array.isArray(data.days) || data.days.length < 90) {
+    throw new Error('Received an incomplete plan. Please try again.');
+  }
+  return data.days;
+}
+
+// ── PLAN ──
+function showPlan() {
+  document.getElementById('hero-goal').textContent = S.goal;
+  renderGrid(); updateStats(); showScreen('plan');
+}
+
+function todayIdx() {
+  for (let i=0;i<100;i++) if(!S.completed.has(i)) return i;
+  return 99;
+}
+
+function renderGrid() {
+  const grid=document.getElementById('days-grid');
+  grid.innerHTML='';
+  const ti=todayIdx(); let shown=0;
+  S.days.forEach((day,i)=>{
+    const done=S.completed.has(i), isToday=(i===ti)&&!done;
+    let vis=false;
+    if(S.filter==='all') vis=true;
+    else if(S.filter==='done') vis=done;
+    else if(S.filter==='left') vis=!done;
+    else if(S.filter==='today') vis=isToday;
+    const card=document.createElement('div');
+    card.className=`day-card${done?' done':''}${isToday?' today-hl':''}${!vis?' hidden':''}`;
+    card.title=day.title||'';
+    card.onclick=()=>openModal(i);
+    if(done){ card.style.background=dayColor(day.day||i+1); }
+    card.innerHTML<`<span class="dnum">${day.day||i+1}</span><span class="dcheck">✓</span>`;
+    grid.appendChild(card);
+    if(vis) shown++;
+  });
+  const empty=document.getElementById('empty-state');
+  empty.style.display=shown===0?'block':'none';
+  grid.style.display=shown===0?'none':'grid';
+  const titles={all:'All 100 Days',done:'Completed Days',left:'Remaining Days',today:"Today's Step"};
+  document.getElementById('section-title').textContent=titles[S.filter]||'All 100 Days';
+}
+
+function updateStats() {
+  const done=S.completed.size, pct=done;
+  document.getElementById('stat-done').textContent=done;
+  document.getElementById('stat-left').textContent=100-done;
+  document.getElementById('stat-pct').textContent=pct+'%';
+  document.getElementById('hero-fill').style.width=Math.max(1,pct)+'%';
+  document.getElementById('prog-label').textContent=pct+'% there';
+  let streak=0; const ti=todayIdx();
+  for(let i=ti-1;i>=0;i--){ if(S.completed.has(i)) streak++; else break; }
+  document.getElementById('stat-streak').textContent=streak;
+}
+
+function setFilter(f,btn) {
+  S.filter=f;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderGrid();
+}
+
+// ── MODAL ──
+function openModal(i) { S.modalIdx=i; renderModal(i); document.getElementById('modal-bg').classList.add('open'); }
+
+function renderModal(i) {
+  const day=S.days[i]; if(!day) return;
+  const done=S.completed.has(i), col=dayColor(day.day||i+1);
+  document.getElementById('m-pill').textContent=`Day ${day.day||i+1}`;
+  document.getElementById('m-pill').style.background=col;
+  document.getElementById('m-focus').textContent=day.focus?`❆ ${day.focus}`:'';
+  document.getElementById('m-focus').style.color=col;
+  document.getElementById('m-title').textContent=day.title||'';
+  document.getElementById('m-action').textContent=day.action||'';
+  document.getElementById('m-action').style.borderLeftColor=col;
+  const btn=document.getElementById('btn-mark');
+  if(done){ btn.className='btn-mark mk-undo'; document.getElementById('mark-icon').textContent='↩'; document.getElementById('mark-txt').textContent='Mark Incomplete'; }
+  else { btn.className='btn-mark mk-done'; document.getElementById('mark-icon').textContent='✓'; document.getElementById('mark-txt').textContent='Mark Complete'; }
+  document.getElementById('btn-prev').disabled=(i===0);
+  document.getElementById('btn-next').disabled=(i>=S.days.length-1);
+}
+
+function bgClose(e) { if(e.target===document.getElementById('modal-bg')) closeModal(); }
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); S.modalIdx=-1; }
+
+function toggleDone() {
+  const i=S.modalIdx; if(i<0) return;
+  if(S.completed.has(i)) S.completed.delete(i); else S.completed.add(i);
+  saveState(); renderModal(i); renderGrid(); updateStats();
+  if(S.completed.size===100) setTimeout(showCelebrate,600);
+}
+
+function navDay(d) { const ni=S.modalIdx+d; if(ni<0||ni>=S.days.length) return; S.modalIdx=ni; renderModal(ni); }
+
+function showCelebrate() { document.getElementById('celebrate').classList.add('show'); }
+function closeCelebrate() { document.getElementById('celebrate').classList.remove('show'); downloadPDF(); }
+
+// ── UTILS ──
+function showScreen(n) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('screen-'+n).classList.add('active'); }
+function saveState() { localStorage.setItem(STORE,JSON.stringify({goal:S.goal,days:S.days,completed:Array.from(S.completed)})); }
+function newJourney() { if(confirm('Start a fresh journey? Your current progress stays saved — you can resume it any time.')) { showScreen('setup'); checkResume(); } }
+
+// ── PDF ──
+function downloadPDF() {
+  if(!window.jspdf) { alert('PDF library not loaded. Check your internet connection.'); return; }
+  if(!S.days.length) { alert('No journey to download yet!'); return; }
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const PW=210,PH=297,M=20;
+  // Cover
+  doc.setFillColor(15,12,41); doc.rect(0,0,PW,PH,'F');
+  doc.setFillColor(79,70,229); doc.rect(0,0,7,PH,'F');
+  doc.setFillColor(109,40,217); doc.circle(PW+10,0,70,'F');
+  doc.setFillColor(139,92,246); doc.circle(PW-10,20,45,'F');
+  doc.setTextColor(167,139,250); doc.setFontSize(10); doc.setFont('helvetica','bold');
+  doc.text('1% BETTER',M+4,44);
+  doc.setTextColor(255,255,255); doc.setFontSize(36); doc.text('Your 100-Day',M+4,68); doc.text('Journey Plan',M+4,83);
+  doc.setDrawColor(79,70,229); doc.setLineWidth(0.6); doc.line(M+4,92,PW-M,92);
+  doc.setFontSize(10); doc.setFont('helvetica','italic'); doc.setTextColor(167,139,250); doc.text('Goal:',M+4,105);
+  doc.setFontSize(15); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255);
+  doc.text(doc.splitTextToSize(S.goal,PW-M*2-4),M+4,117);
+  const sy=175;
+  [[100+'','Total days'],[S.completed.size+'','Days done'],[Math.round(S.completed.size)+'%','Progress']].forEach(([v,l],idx)=>{
+    const x=M+4+idx*56;
+    doc.setFontSize(28); doc.setFont('helvetica','bold'); doc.setTextColor(255,255,255); doc.text(v,x,sy);
+    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(167,139,250); doc.text(l,x,sy+8);
+  });
+  doc.setFontSize(9); doc.setTextColor(100,100,130);
+  doc.text('Generated '+new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}),M+4,PH-18);
+  // Day pages
+  for(let start=0;start<100;start+=10) {
+    doc.addPage();
+    doc.setFillColor(248,250,252); doc.rect(0,0,PW,PH,'F');
+    doc.setFillColor(15,12,41); doc.rect(0,0,PW,18,'F');
+    doc.setTextColor(255,255,255); doc.setFontSize(8); doc.setFont('helvetica','bold');
+    doc.text('1% BETTER — 100 DAY JOURNEY',M,12);
+    doc.setFont('helvetica','normal');
+    doc.text(`Days ${start+1}–${Math.min(start+10,100)}`,PW-M,12,{align:'right'});
+    let y=32; const rh=25;
+    for(let i=start;i<Math.min(start+10,100);i++) {
+      const day=S.days[i]; if(!day) continue;
+      const done=S.completed.has(i);
+      const [cr,cg,cb]=dayColorRaw(day.day||i+1);
+      if(i%2===1){ doc.setFillColor(241,245,249); doc.rect(M-3,y-5,PW-M*2+6,rh,'F'); }
+      if(done){ doc.setFillColor(cr,cg,cb); doc.circle(M+2,y+5,4,'F'); doc.setTextColor(255,255,255); doc.setFontSize(6.5); doc.text('✓',M-0.5,y+7.5); }
+      else { doc.setDrawColor(cr,cg,cb); doc.setLineWidth(0.4); doc.circle(M+2,y+5,4,'S'); }
+      doc.setFillColor(cr,cg,cb); doc.roundedRect(M+9,y-1.5,14,11,2,2,'F');
+      doc.setTextColor(255,255,255); doc.setFontSize(7.5); doc.setFont('helvetica','bold');
+      doc.text(String(day.day||i+1),M+16,y+7,{align:'center'});
+      doc.setTextColor(15,23,42); doc.setFontSize(10); doc.setFont('helvetica','bold');
+      doc.text(day.title||'',M+27,y+4);
+      doc.setTextColor(71,85,105); doc.setFontSize(8); doc.setFont('helvetica','normal');
+      const aLines=doc.splitTextToSize(day.action||'',PW-M*2-30);
+      doc.text(aLines[0]+(aLines.length>1?'…':''),M+27,y+12);
+      if(day.focus){ doc.setTextColor(cr,cg,cb); doc.setFontSize(7); doc.setFont('helvetica','bold'); doc.text(day.focus.toUpperCase(),M+27,y+19); }
+      y+=rh;
+    }
+    doc.setDrawColor(226,232,240); doc.setLineWidth(0.3); doc.line(M,PH-16,PW-M,PH-16);
+    doc.setTextColor(148,163,184); doc.setFontSize(7.5); doc.setFont('helvetica','normal');
+    doc.text('1% Better — 100 Day Journey',M,PH-9);
+    doc.text('Page '+(Math.floor(start/10)+2),PW-M,PH-9,{align:'right'});
+  }
+  doc.save('1percent-'+S.goal.slice(0,28).replace(/[^a-z0-9]/gi,'-').toLowerCase()+'.pdf');
+}
 </script>
 </body>
-</html>
+  </html>
